@@ -9,8 +9,8 @@ router.get('/', (_req, res) => {
     res.json([
         {
             name: 'uno',
-            roomId: '1'
-        }
+            roomId: '1',
+        },
     ]);
 });
 exports.default = router;

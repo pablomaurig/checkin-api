@@ -13,14 +13,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
+require("module-alias/register");
+require("source-map-support/register");
 const app_1 = __importDefault(require("./app"));
 const db_1 = require("./db");
-const PORT = 3000;
+const config_1 = require("./config/config");
+const port = config_1.config.port;
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         yield db_1.AppDataSource.initialize();
-        app_1.default.listen(PORT, () => {
-            console.log('Server is running on port: ', PORT);
+        app_1.default.listen(port, () => {
+            console.log('Server is running on port: ', port);
         });
     });
 }

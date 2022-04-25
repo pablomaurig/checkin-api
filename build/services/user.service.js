@@ -13,39 +13,70 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const boom_1 = __importDefault(require("@hapi/boom"));
+const user_entity_1 = require("../entities/user.entity");
+const hash_1 = require("@utils/hash");
 class UserService {
-    constructor() {
-        this.users = [
-            {
-                id: '123',
-                name: 'user',
-                lastName: 'lastname',
-                password: 'pass',
-                role: 'guest',
-                email: 'as@asd.com'
-            }
-        ];
-    }
     getUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.users;
+            const users = yield user_entity_1.User.find();
+            if (users.length === 0)
+                throw boom_1.default.notFound('User not found');
+            return users;
         });
     }
     getUserById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = this.users.find(user => user.id === id);
+            const user = yield user_entity_1.User.findOneBy({
+                id: id,
+            });
             if (!user) {
-                throw boom_1.default.notFound('Product not found');
+                throw boom_1.default.notFound('User not found');
+            }
+            return user;
+        });
+    }
+    getUserByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield user_entity_1.User.findOneBy({
+                email: email,
+            });
+            if (!user) {
+                throw boom_1.default.notFound('User not found');
             }
             return user;
         });
     }
     createUser(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = this.users.find(user => user.email === body.email);
-            if (user) {
-                throw boom_1.default.badRequest();
+            const { email, password } = body;
+            const hash = yield (0, hash_1.hashPassword)(password);
+            const user = new user_entity_1.User();
+            user.email = email;
+            user.password = hash;
+            user.role = 'host';
+            yield user.save();
+            return user.id;
+        });
+    }
+    updateUser(id, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield user_entity_1.User.findOneBy({ id: id });
+            if (!user) {
+                throw boom_1.default.notFound('User does not exists');
             }
+            const updateUser = Object.assign(Object.assign({}, body), { updatedAt: new Date() });
+            yield user_entity_1.User.update({ id: id }, updateUser);
+            const updatedUser = yield user_entity_1.User.findOneBy({ id: id });
+            return updatedUser;
+        });
+    }
+    deleteUser(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield user_entity_1.User.findOneBy({ id: id });
+            if (!user) {
+                throw boom_1.default.notFound('User does not exists');
+            }
+            yield user.remove();
             return user;
         });
     }

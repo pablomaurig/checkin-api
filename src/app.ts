@@ -2,12 +2,12 @@ import express from 'express';
 import routerApi from './routes';
 import cors from 'cors';
 import morgan from 'morgan';
-
 import {
   errorHandler,
   logErrors,
   boomErrorHandler,
-} from './middlewares/error.handler';
+} from '@middlewares/error.handler';
+import '@utils/auth';
 
 const app = express();
 

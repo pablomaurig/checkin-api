@@ -1,25 +1,18 @@
 import boom from '@hapi/boom';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { User } from '../entities/user.entity';
-
-interface UserInterface {
-  id: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  role: string;
-  email: string;
-}
-
-export type CreateUser = Pick<UserInterface, 'email' | 'password'>;
-
-interface UserService {
-  users: UserInterface[];
-}
+import { hashPassword } from '@utils/hash';
+import {
+  User as UserInterface,
+  CreateUser,
+  UserRole,
+} from '../types/user.types';
 
 class UserService {
   async getUsers() {
     const users = await User.find();
+
+    if (users.length === 0) throw boom.notFound('User not found');
 
     return users;
   }
@@ -35,13 +28,25 @@ class UserService {
     return user;
   }
 
+  async getUserByEmail(email: string) {
+    const user = await User.findOneBy({
+      email: email,
+    });
+    if (!user) {
+      throw boom.notFound('User not found');
+    }
+
+    return user;
+  }
+
   async createUser(body: CreateUser) {
     const { email, password } = body;
+    const hash = await hashPassword(password);
 
     const user = new User();
     user.email = email;
-    user.password = password;
-    user.role = 'host';
+    user.password = hash;
+    user.role = UserRole.CUSTOMER;
 
     await user.save();
 

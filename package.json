@@ -17,10 +17,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/morgan": "^1.9.3",
     "@types/node": "^17.0.24",
+    "@types/passport": "^1.0.7",
+    "@types/passport-jwt": "^3.0.6",
+    "@types/passport-local": "^1.0.34",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
     "eslint": "^7.32.0",
@@ -34,17 +38,36 @@
     "nodemon": "^2.0.15",
     "prettier": "^2.6.2",
     "ts-node-dev": "^1.1.8",
-    "tsconfig-paths": "^3.14.1",
     "typescript": "^4.6.3"
   },
   "dependencies": {
     "@hapi/boom": "^9.1.4",
+    "@types/jsonwebtoken": "^8.5.8",
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
     "morgan": "^1.10.0",
+    "passport": "^0.5.2",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.6"
+  },
+  "_moduleAliases": {
+    "@config": "src/config",
+    "@controllers": "src/controllers",
+    "@entities": "src/entities",
+    "@middlewares": "src/middlewares",
+    "@routes": "src/routes",
+    "@schemas": "src/schemas",
+    "@services": "src/services",
+    "@types": "src/types",
+    "@utils": "src/utils",
+    "@src": "src/src"
   }
 }

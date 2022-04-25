@@ -6,10 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const boom_1 = __importDefault(require("@hapi/boom"));
 const validatorHandler = (schema, property) => {
     return (req, _res, next) => {
+        // @ts-expect-error: revisar este type
         const data = req[property];
         const { error } = schema.validate(data, { abortEarly: false });
         if (error) {
-            next(boom_1.default.badRequest(error));
+            next(boom_1.default.badRequest(JSON.stringify(error.message)));
         }
         next();
     };

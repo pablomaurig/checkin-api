@@ -7,7 +7,9 @@ const logErrors = (err, _req, _res, next) => {
     next(err);
 };
 exports.logErrors = logErrors;
-const errorHandler = (err, _req, res, _next) => {
+const errorHandler = (err, _req, res, 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+_next) => {
     console.log('errorHandler');
     res.status(500).json({
         message: err.message,

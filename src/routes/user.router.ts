@@ -1,22 +1,29 @@
 import express from 'express';
-import validatorHandler from '../middlewares/validator.handler';
+import { checkApiKey } from '@middlewares/auth.handler';
+import validatorHandler from '@middlewares/validator.handler';
 import {
   createUserSchema,
   updateUserSchema,
   getUserSchema,
-} from '../schemas/user.schema';
+} from '@schemas/user.schema';
 import {
   createUser,
   deleteUser,
   getUserById,
   getUsers,
   updateUser,
-} from '../controllers/user.controller';
+} from '@controllers/user.controller';
+
 const router = express.Router();
 
-router.get('/', getUsers);
+router.get('/', checkApiKey, getUsers);
 
-router.get('/:id', validatorHandler(getUserSchema, 'params'), getUserById);
+router.get(
+  '/:id',
+  // checkApiKey,
+  validatorHandler(getUserSchema, 'params'),
+  getUserById
+);
 
 router.post('/', validatorHandler(createUserSchema, 'body'), createUser);
 
