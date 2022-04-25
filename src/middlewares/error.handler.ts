@@ -26,6 +26,7 @@ export const errorHandler = (
 };
 
 export const boomErrorHandler = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   err: any,
   _req: Request,
   res: Response,

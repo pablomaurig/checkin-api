@@ -13,7 +13,7 @@ interface Config {
 }
 
 export const config: Config = {
-  // env: process.env.NODE_ENV || 'dev',
+  env: process.env.NODE_ENV || 'dev',
   // isProd: process.env.NODE_ENV === 'production',
   // dbUrl: process.env.DATABASE_URL,
   // apiKey: process.env.API_KEY,
