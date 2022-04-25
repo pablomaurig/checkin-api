@@ -6,6 +6,7 @@ export interface User {
   password: string;
   role: string;
   email: string;
+  recoveryToken?: string | null;
 }
 
 export enum UserRole {

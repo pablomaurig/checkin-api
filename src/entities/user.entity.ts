@@ -29,10 +29,15 @@ export class User extends BaseEntity {
   email: string;
 
   @Column()
-  password: string;
+  password?: string;
 
   @Column()
   role: string;
+
+  @Column({
+    nullable: true,
+  })
+  recoveryToken?: string;
 
   @CreateDateColumn()
   createdAt: Date;
