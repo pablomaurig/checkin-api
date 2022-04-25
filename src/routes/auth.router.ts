@@ -23,7 +23,7 @@ router.post(
 router.post(
   '/change-password',
   validatorHandler(changePasswordSchema, 'body'),
-  passport.authenticate('local', { session: false }),
+  // passport.authenticate('local', { session: false }),
   changePassword
 );
 export default router;
