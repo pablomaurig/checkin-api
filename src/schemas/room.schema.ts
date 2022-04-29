@@ -14,3 +14,11 @@ export const createRoomSchema = joi.object({
     singleBeds: singleBeds.required(),
     doubleBeds: doubleBeds.required()
 });
+
+export const updateRoomSchema = joi.object({
+    floor: floor,
+    name: name,
+    description: description,
+    singleBeds: singleBeds,
+    doubleBeds: doubleBeds
+});

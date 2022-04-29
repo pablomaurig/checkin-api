@@ -1,8 +1,9 @@
-//import boom from '@hapi/boom';
-//import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import boom from '@hapi/boom';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { Room } from '../entities/room.entity';
 import {
-  CreateRoom
+  CreateRoom, 
+  Room as RoomInterface
 } from '../types/room.types';
 
 class RoomService {
@@ -25,6 +26,21 @@ class RoomService {
     
         return room.id;
       }
+    
+    async updateRoom(id: number, body: Partial<RoomInterface>){
+      const room = await Room.findOneBy({ id: id });
+      if (!room) {
+        throw boom.notFound('Room does not exists');
+      }
+
+      //const updateRoom = { ...body, updatedAt: new Date() };
+
+      await Room.update({ id: id }, body as QueryDeepPartialEntity<Room>);
+
+      const updatedRoom = await Room.findOneBy({ id: id });
+
+      return updatedRoom;
+    }  
 }      
 
 export default RoomService;

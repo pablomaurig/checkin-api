@@ -29,3 +29,19 @@ export const createRoom = async (
       next(error);
     }
   };
+
+export const updateRoom = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+
+    const room = await service.updateRoom(parseInt(id), req.body);
+
+    res.json(room);
+  } catch(error){
+    next(error);
+  }
+};     
