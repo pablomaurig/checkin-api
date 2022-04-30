@@ -17,16 +17,16 @@ const router = express.Router();
 
 router.post(
   '/', 
-  validatorHandler(createRoomSchema, 'body'),
   passport.authenticate('jwt', { session: false }),
   checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
+  validatorHandler(createRoomSchema, 'body'),
   createRoom);
 
 router.patch(
   '/:id',
-  validatorHandler(updateRoomSchema, 'body'),
   passport.authenticate('jwt', { session: false }),
   checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
+  validatorHandler(updateRoomSchema, 'body'),
   updateRoom);
 
 export default router;
