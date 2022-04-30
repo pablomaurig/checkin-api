@@ -33,8 +33,6 @@ class RoomService {
         throw boom.notFound('Room does not exists');
       }
 
-      //const updateRoom = { ...body, updatedAt: new Date() };
-
       await Room.update({ id: id }, body as QueryDeepPartialEntity<Room>);
 
       const updatedRoom = await Room.findOneBy({ id: id });
