@@ -43,8 +43,6 @@ class RoomService {
     async getRooms() {
       const rooms = await Room.find();
 
-      //if (rooms.length === 0) throw boom.notFound('User not found');
-  
       return rooms;
     }
 
