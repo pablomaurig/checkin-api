@@ -39,6 +39,27 @@ class RoomService {
 
       return updatedRoom;
     }  
+
+    async getRooms() {
+      const rooms = await Room.find();
+
+      //if (rooms.length === 0) throw boom.notFound('User not found');
+  
+      return rooms;
+    }
+
+    async deleteRoom(id: number) {
+      const room = await Room.findOneBy({ id: id });
+  
+      if (!room) {
+        throw boom.notFound('Room does not exists');
+      }
+  
+      await room.remove();
+  
+      return room;
+    }
+  
 }      
 
 export default RoomService;
