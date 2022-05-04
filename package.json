@@ -9,7 +9,7 @@
     "start": "node build/index.js",
     "tsc": "tsc",
     "lint": "npm run lint:ts && npm run lint:eslint",
-    "lint:eslint": "eslint './**/*.ts'",
+    "lint:eslint": "eslint \"**/*.{ts}\"",
     "lint:fix": "npm run lint:ts && npm run lint:eslint -- --fix",
     "lint:ts": "tsc -p ./tsconfig.json --noEmit"
   },
