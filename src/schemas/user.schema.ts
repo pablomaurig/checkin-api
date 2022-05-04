@@ -30,7 +30,7 @@ export const updateUserSchema = joi.object({
 });
 
 export const recoverSchema = joi.object({
-  email: email.required()
+  email: email.required(),
 });
 
 export const getUserSchema = joi.object({

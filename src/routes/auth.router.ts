@@ -1,7 +1,11 @@
 import express from 'express';
 import passport from 'passport';
 import validatorHandler from '@middlewares/validator.handler';
-import { loginSchema, changePasswordSchema, recoverSchema } from '@schemas/user.schema';
+import {
+  loginSchema,
+  changePasswordSchema,
+  recoverSchema,
+} from '@schemas/user.schema';
 import { login, recover, changePassword } from '@controllers/auth.controller';
 
 const router = express.Router();

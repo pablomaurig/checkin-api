@@ -10,7 +10,7 @@ const routerApi = (app: Application) => {
   router.use('/bookings', bookingRouter);
   router.use('/users', userRouter);
   router.use('/auth', authRouter);
-  router.use('/rooms', roomRouter)
+  router.use('/rooms', roomRouter);
 };
 
 export default routerApi;
