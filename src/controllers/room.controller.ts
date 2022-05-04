@@ -38,7 +38,7 @@ export const updateRoom = async (
   } catch (error) {
     next(error);
   }
-};   
+};
 
 export const getRooms = async (
   _req: Request,
@@ -49,10 +49,10 @@ export const getRooms = async (
     const rooms = await service.getRooms();
 
     res.json(rooms);
-  } catch(error) {
+  } catch (error) {
     next(error);
   }
-};    
+};
 
 export const deleteRoom = async (
   req: Request,
@@ -68,5 +68,3 @@ export const deleteRoom = async (
     next(error);
   }
 };
-
-

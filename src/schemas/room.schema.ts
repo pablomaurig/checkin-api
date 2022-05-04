@@ -16,14 +16,13 @@ export const createRoomSchema = joi.object({
 });
 
 export const updateRoomSchema = joi.object({
-    floor: floor,
-    name: name,
-    description: description,
-    singleBeds: singleBeds,
-    doubleBeds: doubleBeds
+  floor: floor,
+  name: name,
+  description: description,
+  singleBeds: singleBeds,
+  doubleBeds: doubleBeds,
 });
 
 export const deleteRoomSchema = joi.object({
-    id: id.required()
-})
-
+  id: id.required(),
+});

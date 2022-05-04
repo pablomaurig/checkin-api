@@ -2,7 +2,7 @@ import express from 'express';
 import {
   createRoomSchema,
   updateRoomSchema,
-  deleteRoomSchema
+  deleteRoomSchema,
 } from '@schemas/room.schema';
 
 import passport from 'passport';
@@ -14,7 +14,7 @@ import {
   createRoom,
   updateRoom,
   getRooms,
-  deleteRoom
+  deleteRoom,
 } from '@controllers/room.controller';
 
 const router = express.Router();
@@ -35,17 +35,19 @@ router.patch(
   updateRoom
 );
 
-  router.get(
-    '/', 
-    passport.authenticate('jwt', { session: false }),
-    checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
-    getRooms);  
+router.get(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
+  getRooms
+);
 
-  router.delete(
-    '/:id',
-    passport.authenticate('jwt', { session: false }),
-    checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
-    validatorHandler(deleteRoomSchema, 'params'),
-    deleteRoom);  
+router.delete(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
+  validatorHandler(deleteRoomSchema, 'params'),
+  deleteRoom
+);
 
 export default router;
