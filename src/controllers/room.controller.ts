@@ -39,3 +39,32 @@ export const updateRoom = async (
     next(error);
   }
 };
+
+export const getRooms = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const rooms = await service.getRooms();
+
+    res.json(rooms);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteRoom = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const room = await service.deleteRoom(parseInt(id));
+
+    res.json(room);
+  } catch (error) {
+    next(error);
+  }
+};
