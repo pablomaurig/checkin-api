@@ -9,7 +9,7 @@ jobs:
       matrix:
         node: ['16']
     steps:
-      - uses: actions/checkout@2
+      - uses: actions/checkout@v2
       - name: Setup Node 16
         uses: actions/setup-node@v2
         with:
