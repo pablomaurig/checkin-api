@@ -61,9 +61,9 @@ export const deleteRoom = async (
 ) => {
   try {
     const { id } = req.params;
-    const user = await service.deleteRoom(parseInt(id));
+    const room = await service.deleteRoom(parseInt(id));
 
-    res.json(user);
+    res.json(room);
   } catch (error) {
     next(error);
   }
