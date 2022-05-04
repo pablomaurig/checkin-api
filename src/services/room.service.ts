@@ -1,10 +1,7 @@
 import boom from '@hapi/boom';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { Room } from '../entities/room.entity';
-import {
-  CreateRoom, 
-  Room as RoomInterface
-} from '../types/room.types';
+import { CreateRoom, Room as RoomInterface } from '../types/room.types';
 
 class RoomService {
     async createRoom(body: CreateRoom) {
@@ -61,3 +58,4 @@ class RoomService {
 }      
 
 export default RoomService;
+

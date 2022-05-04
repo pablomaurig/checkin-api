@@ -4,31 +4,25 @@ import RoomService from '@services/room.service';
 const service = new RoomService();
 
 export const createRoom = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      const {   
-        floor, 
-        name, 
-        description, 
-        singleBeds, 
-        doubleBeds 
-    } = req.body;
-      const id = await service.createRoom({ 
-          floor, 
-          name, 
-          description, 
-          singleBeds, 
-          doubleBeds 
-        });
-  
-      res.json(id);
-    } catch (error) {
-      next(error);
-    }
-  };
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { floor, name, description, singleBeds, doubleBeds } = req.body;
+    const id = await service.createRoom({
+      floor,
+      name,
+      description,
+      singleBeds,
+      doubleBeds,
+    });
+
+    res.json(id);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const updateRoom = async (
   req: Request,
@@ -41,7 +35,7 @@ export const updateRoom = async (
     const room = await service.updateRoom(parseInt(id), req.body);
 
     res.json(room);
-  } catch(error){
+  } catch (error) {
     next(error);
   }
 };   
@@ -74,9 +68,5 @@ export const deleteRoom = async (
     next(error);
   }
 };
-
-
-
-
 
 
