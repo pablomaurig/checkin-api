@@ -1,9 +1,6 @@
 name: build-test
 
-on:
-  pull-request:
-    branches:
-      - develop
+on: [pull_request]
 
 jobs:
   build:
@@ -19,3 +16,6 @@ jobs:
             node-version: 16.x
         - run: npm install
         - run: npm run lint
+
+        name: build-test
+
