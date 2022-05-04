@@ -19,4 +19,7 @@ export class Room extends BaseEntity {
 
   @Column()
   doubleBeds: number;
+
+  @Column()
+  enable: boolean;
 }
