@@ -42,4 +42,4 @@ export const createEmployeeSchema = joi.object({
   lastName: lastName.required(),
   email: email.required(),
   password: password.required(),
-})
+});

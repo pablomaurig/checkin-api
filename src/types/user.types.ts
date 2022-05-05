@@ -19,4 +19,7 @@ export type CreateUser = Pick<User, 'email' | 'password'>;
 
 export type LogedUser = Pick<User, 'email' | 'password'>;
 
-export type CreateEmployee = Pick<User, 'email' | 'password' | 'firstName' | 'lastName'>;
+export type CreateEmployee = Pick<
+  User,
+  'email' | 'password' | 'firstName' | 'lastName'
+>;
