@@ -32,9 +32,6 @@ class UserService {
     const user = await User.findOneBy({
       email: email,
     });
-    if (!user) {
-      throw boom.notFound('User not found');
-    }
 
     return user;
   }
