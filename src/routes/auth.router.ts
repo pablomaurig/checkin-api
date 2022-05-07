@@ -1,7 +1,11 @@
 import express from 'express';
 import passport from 'passport';
 import validatorHandler from '@middlewares/validator.handler';
-import { loginSchema, changePasswordSchema } from '@schemas/user.schema';
+import {
+  loginSchema,
+  changePasswordSchema,
+  recoverSchema,
+} from '@schemas/user.schema';
 import { login, recover, changePassword } from '@controllers/auth.controller';
 
 const router = express.Router();
@@ -15,7 +19,7 @@ router.post(
 
 router.post(
   '/recover',
-  // validatorHandler(loginSchema, 'body'),
+  validatorHandler(recoverSchema, 'body'),
   // passport.authenticate('local', { session: false }),
   recover
 );

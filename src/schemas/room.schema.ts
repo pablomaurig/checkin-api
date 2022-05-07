@@ -1,6 +1,6 @@
 import joi from 'joi';
 
-// const id = joi.number();
+const id = joi.number();
 const floor = joi.number();
 const name = joi.string();
 const description = joi.string();
@@ -21,4 +21,8 @@ export const updateRoomSchema = joi.object({
   description: description,
   singleBeds: singleBeds,
   doubleBeds: doubleBeds,
+});
+
+export const deleteRoomSchema = joi.object({
+  id: id.required(),
 });

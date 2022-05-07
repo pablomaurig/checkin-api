@@ -29,6 +29,17 @@ export const updateUserSchema = joi.object({
   lastName: lastName,
 });
 
+export const recoverSchema = joi.object({
+  email: email.required(),
+});
+
 export const getUserSchema = joi.object({
   id: id.required(),
+});
+
+export const createEmployeeSchema = joi.object({
+  firstName: firstName.required(),
+  lastName: lastName.required(),
+  email: email.required(),
+  password: password.required(),
 });

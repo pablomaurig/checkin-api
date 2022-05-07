@@ -1,3 +1,4 @@
+import boom from '@hapi/boom';
 import { Request, Response, NextFunction } from 'express';
 import UsersService from '@services/user.service';
 
@@ -39,9 +40,15 @@ export const createUser = async (
 ) => {
   try {
     const { email, password } = req.body;
-    const id = await service.createUser({ email, password });
 
-    res.json(id);
+    const user = await service.getUserByEmail(email);
+
+    if (!user) {
+      const id = await service.createUser({ email, password });
+      res.json(id);
+    } else {
+      throw boom.notFound('User already exists');
+    }
   } catch (error) {
     next(error);
   }

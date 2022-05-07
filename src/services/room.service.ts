@@ -13,6 +13,7 @@ class RoomService {
     room.description = description;
     room.singleBeds = singleBeds;
     room.doubleBeds = doubleBeds;
+    room.enable = true;
     await room.save();
 
     return room.id;
@@ -23,6 +24,32 @@ class RoomService {
     if (!room) {
       throw boom.notFound('Room does not exists');
     }
+
+    await Room.update({ id: id }, body as QueryDeepPartialEntity<Room>);
+
+    const updatedRoom = await Room.findOneBy({ id: id });
+
+    return updatedRoom;
+  }
+
+  async getRooms() {
+    const rooms = await Room.find();
+
+    return rooms.filter(room => {
+      return room.enable;
+    });
+  }
+
+  async deleteRoom(id: number) {
+    const room = await Room.findOneBy({ id: id });
+
+    if (!room) {
+      throw boom.notFound('Room does not exists');
+    }
+
+    const body = {
+      enable: false,
+    };
 
     await Room.update({ id: id }, body as QueryDeepPartialEntity<Room>);
 
