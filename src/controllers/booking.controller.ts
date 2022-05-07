@@ -1,45 +1,61 @@
 import { Request, Response, NextFunction } from 'express';
-import UsersService from '@services/user.service';
+import BookingsService from '@services/booking.service';
 
-const service = new UsersService();
+const service = new BookingsService();
 
-export const getUsers = async (
-  _req: Request,
+export const getBookings = async (
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const users = await service.getUsers();
+    const { bookingNumber, surname } = req.query;
+    let bookings;
+    if (bookingNumber && surname) {
+      bookings = await service.getBookingByNumberAndSurname(
+        bookingNumber.toString(),
+        surname.toString()
+      );
+    } else {
+      bookings = await service.getBookings();
+    }
 
-    res.json(users);
+    res.json(bookings);
   } catch (error) {
     next(error);
   }
 };
 
-export const getUserById = async (
+export const getBookingById = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { id } = req.params;
-    const user = await service.getUserById(parseInt(id));
+    const booking = await service.getBookingById(parseInt(id));
 
-    res.json(user);
+    res.json(booking);
   } catch (error) {
     next(error);
   }
 };
 
-export const createUser = async (
+export const createBooking = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { email, password } = req.body;
-    const id = await service.createUser({ email, password });
+    const { bookingNumber, surname, startDate, endDate, amountGuests } =
+      req.body;
+    const id = await service.createBooking({
+      bookingNumber,
+      surname,
+      startDate,
+      endDate,
+      amountGuests,
+    });
 
     res.json(id);
   } catch (error) {
@@ -47,7 +63,7 @@ export const createUser = async (
   }
 };
 
-export const updateUser = async (
+export const updateBooking = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -55,24 +71,24 @@ export const updateUser = async (
   try {
     const { id } = req.params;
 
-    const user = await service.updateUser(parseInt(id), req.body);
+    const booking = await service.updateBooking(parseInt(id), req.body);
 
-    res.json(user);
+    res.json(booking);
   } catch (error) {
     next(error);
   }
 };
 
-export const deleteUser = async (
+export const deleteBooking = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { id } = req.params;
-    const user = await service.deleteUser(parseInt(id));
+    const booking = await service.deleteBooking(parseInt(id));
 
-    res.json(user);
+    res.json(booking);
   } catch (error) {
     next(error);
   }

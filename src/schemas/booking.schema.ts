@@ -1,34 +1,33 @@
 import joi from 'joi';
 
 const id = joi.number();
-const firstName = joi.string();
-const lastName = joi.string();
-const password = joi.string();
-const email = joi.string().email();
-const token = joi.string();
+const roomId = joi.number();
+const bookingNumber = joi.string();
+const surname = joi.string();
+const startDate = joi.date();
+const endDate = joi.date();
+const amountGuests = joi.number();
+// const checkIn = joi.date();
+// const checkOut = joi.date();
+// const state = joi.string();
 
-export const createUserSchema = joi.object({
-  email: email.required(),
-  password: password.required(),
+export const createBookingSchema = joi.object({
+  bookingNumber: bookingNumber.required(),
+  surname: surname.required(),
+  startDate: startDate.required(),
+  endDate: endDate.required(),
+  amountGuests: amountGuests.required(),
 });
 
-export const loginSchema = joi.object({
-  email: email.required(),
-  password: password.required(),
+export const updateBookingSchema = joi.object({
+  roomId: roomId,
+  bookingNumber: bookingNumber,
+  surname: surname,
+  startDate: startDate,
+  endDate: endDate,
+  amountGuests: amountGuests,
 });
 
-export const changePasswordSchema = joi.object({
-  email: email.required(),
-  password: password.required(),
-  token: token.required(),
-  newPassword: password.required(),
-});
-
-export const updateUserSchema = joi.object({
-  firstName: firstName,
-  lastName: lastName,
-});
-
-export const getUserSchema = joi.object({
+export const getBookingSchema = joi.object({
   id: id.required(),
 });

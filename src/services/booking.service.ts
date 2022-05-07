@@ -1,84 +1,96 @@
 import boom from '@hapi/boom';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { User } from '../entities/user.entity';
-import { hashPassword } from '@utils/hash';
+import { Booking } from '../entities/booking.entity';
 import {
-  User as UserInterface,
-  CreateUser,
-  UserRole,
-} from '../types/user.types';
+  Booking as BookingInterface,
+  CreateBooking,
+  BookingStatus,
+} from '../types/booking.types';
 
-class UserService {
-  async getUsers() {
-    const users = await User.find();
+class BookingService {
+  async getBookings() {
+    const bookings = await Booking.find();
 
-    if (users.length === 0) throw boom.notFound('User not found');
+    if (bookings.length === 0) throw boom.notFound('Booking not found');
 
-    return users;
+    return bookings;
   }
 
-  async getUserById(id: number) {
-    const user = await User.findOneBy({
+  async getBookingById(id: number) {
+    const booking = await Booking.findOneBy({
       id: id,
     });
-    if (!user) {
-      throw boom.notFound('User not found');
+    if (!booking) {
+      throw boom.notFound('Booking not found');
     }
 
-    return user;
+    return booking;
   }
 
-  async getUserByEmail(email: string) {
-    const user = await User.findOneBy({
-      email: email,
+  async getBookingByNumberAndSurname(bookingNumber: string, surname: string) {
+    const booking = await Booking.findOneBy({
+      bookingNumber: bookingNumber,
+      surname: surname,
     });
-    if (!user) {
-      throw boom.notFound('User not found');
+    if (!booking) {
+      throw boom.notFound('Booking not found');
     }
 
-    return user;
+    return booking;
   }
 
-  async createUser(body: CreateUser) {
-    const { email, password } = body;
-    const hash = await hashPassword(password);
+  async createBooking(body: CreateBooking) {
+    const { bookingNumber, surname, startDate, endDate, amountGuests } = body;
 
-    const user = new User();
-    user.email = email;
-    user.password = hash;
-    user.role = UserRole.CUSTOMER;
+    const booking = new Booking();
+    booking.bookingNumber = bookingNumber;
+    booking.surname = surname;
+    booking.startDate = startDate;
+    booking.endDate = endDate;
+    booking.amountGuests = amountGuests;
+    booking.state = BookingStatus.INP;
+    booking.enable = true;
 
-    await user.save();
+    await booking.save();
 
-    return user.id;
+    return booking.id;
   }
 
-  async updateUser(id: number, body: Partial<UserInterface>) {
-    const user = await User.findOneBy({ id: id });
-    if (!user) {
-      throw boom.notFound('User does not exists');
+  async updateBooking(id: number, body: Partial<BookingInterface>) {
+    const booking = await Booking.findOneBy({ id: id });
+    if (!booking) {
+      throw boom.notFound('Booking does not exists');
     }
 
-    const updateUser = { ...body, updatedAt: new Date() };
+    const updateBooking = { ...body, updatedAt: new Date() };
 
-    await User.update({ id: id }, updateUser as QueryDeepPartialEntity<User>);
+    await Booking.update(
+      { id: id },
+      updateBooking as QueryDeepPartialEntity<Booking>
+    );
 
-    const updatedUser = await User.findOneBy({ id: id });
+    const updatedBooking = await Booking.findOneBy({ id: id });
 
-    return updatedUser;
+    return updatedBooking;
   }
 
-  async deleteUser(id: number) {
-    const user = await User.findOneBy({ id: id });
-
-    if (!user) {
-      throw boom.notFound('User does not exists');
+  async deleteBooking(id: number) {
+    const booking = await Booking.findOneBy({ id: id });
+    if (!booking) {
+      throw boom.notFound('Booking does not exists');
     }
 
-    await user.remove();
+    const updateBooking = { updatedAt: new Date(), enable: false };
 
-    return user;
+    await Booking.update(
+      { id: id },
+      updateBooking as QueryDeepPartialEntity<Booking>
+    );
+
+    const updatedBooking = await Booking.findOneBy({ id: id });
+
+    return updatedBooking;
   }
 }
 
-export default UserService;
+export default BookingService;
