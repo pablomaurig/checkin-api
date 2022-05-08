@@ -1,5 +1,7 @@
 import express from 'express';
 import passport from 'passport';
+import { checkRoles } from '@middlewares/auth.handler';
+import { UserRole } from '../types/user.types';
 import validatorHandler from '@middlewares/validator.handler';
 import {
   createBookingSchema,
@@ -19,25 +21,38 @@ const router = express.Router();
 router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
-
+  checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
   getBookings
 );
 
 router.get(
   '/:id',
-  validatorHandler(getBookingSchema, 'params'),
   passport.authenticate('jwt', { session: false }),
+  validatorHandler(getBookingSchema, 'params'),
   getBookingById
 );
 
-router.post('/', validatorHandler(createBookingSchema, 'body'), createBooking);
+router.post(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
+  validatorHandler(createBookingSchema, 'body'),
+  createBooking
+);
 
 router.patch(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
   validatorHandler(updateBookingSchema, 'body'),
   updateBooking
 );
 
-router.delete('/:id', deleteBooking);
+router.delete(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
+  deleteBooking
+);
 
 export default router;

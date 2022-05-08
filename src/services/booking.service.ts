@@ -10,15 +10,15 @@ import {
 class BookingService {
   async getBookings() {
     const bookings = await Booking.find();
-
-    if (bookings.length === 0) throw boom.notFound('Booking not found');
-
-    return bookings;
+    return bookings.filter(booking => {
+      return booking.enable;
+    });
   }
 
   async getBookingById(id: number) {
     const booking = await Booking.findOneBy({
       id: id,
+      enable: true,
     });
     if (!booking) {
       throw boom.notFound('Booking not found');
@@ -31,6 +31,7 @@ class BookingService {
     const booking = await Booking.findOneBy({
       bookingNumber: bookingNumber,
       surname: surname,
+      enable: true,
     });
     if (!booking) {
       throw boom.notFound('Booking not found');
