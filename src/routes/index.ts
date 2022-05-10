@@ -4,7 +4,7 @@ import userRouter from '@routes/user.router';
 import authRouter from '@routes/auth.router';
 import roomRouter from '@routes/room.router';
 import employeeRouter from '@routes/employee.router';
-import surveyRouter from './survey.router';
+import surveyRouter from '@routes/survey.router';
 
 const routerApi = (app: Application) => {
   const router = express.Router();
