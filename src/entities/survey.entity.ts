@@ -17,17 +17,17 @@ export class Survey extends BaseEntity {
   @Column({
     nullable: true,
   })
-  answer1: string;
+  answer1: number;
 
   @Column({
     nullable: true,
   })
-  answer2: string;
+  answer2: number;
 
   @Column({
     nullable: true,
   })
-  answer3: string;
+  answer3: number;
 
   @CreateDateColumn()
   createdAt: Date;
