@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import { User } from './entities/user.entity';
 import { Room } from './entities/room.entity';
 import { Survey } from '@entities/survey.entity';
+import { Booking } from '@entities/booking.entity';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -12,7 +13,7 @@ export const AppDataSource = new DataSource({
   database: 'hotel',
   synchronize: true,
   logging: true,
-  entities: [User, Room, Survey],
+  entities: [User, Room, Survey, Booking],
   subscribers: [],
   migrations: [],
 });
