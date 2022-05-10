@@ -18,12 +18,7 @@ import {
 
 const router = express.Router();
 
-router.get(
-  '/',
-  passport.authenticate('jwt', { session: false }),
-  checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
-  getBookings
-);
+router.get('/', passport.authenticate('jwt', { session: false }), getBookings);
 
 router.get(
   '/:id',
