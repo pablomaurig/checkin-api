@@ -5,9 +5,6 @@ import { CreateSurvey } from '../types/survey.types';
 class SurveyService {
   async getSurveys() {
     const surveys = await Survey.find();
-
-    if (surveys.length === 0) throw boom.notFound('Survey not found');
-
     return surveys;
   }
 

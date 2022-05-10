@@ -15,17 +15,24 @@ const router = express.Router();
 router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(UserRole.ADMIN, UserRole.CUSTOMER),
+  checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
   getSurveys
 );
 
 router.get(
   '/:id',
-  validatorHandler(getSurveySchema, 'params'),
   passport.authenticate('jwt', { session: false }),
+  checkRoles(UserRole.CUSTOMER),
+  validatorHandler(getSurveySchema, 'params'),
   getSurveyByBooking
 );
 
-router.post('/', validatorHandler(createSurveySchema, 'body'), createSurvey);
+router.post(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(UserRole.CUSTOMER),
+  validatorHandler(createSurveySchema, 'body'),
+  createSurvey
+);
 
 export default router;
