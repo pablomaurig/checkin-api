@@ -15,6 +15,31 @@ class BookingService {
     });
   }
 
+  async getBookingById(id: number) {
+    const booking = await Booking.findOneBy({
+      id: id,
+      enable: true,
+    });
+    if (!booking) {
+      throw boom.notFound('Booking not found');
+    }
+
+    return booking;
+  }
+
+  async getBookingByNumberAndSurname(bookingNumber: string, surname: string) {
+    const booking = await Booking.findOneBy({
+      bookingNumber: bookingNumber,
+      surname: surname,
+      enable: true,
+    });
+    if (!booking) {
+      throw boom.notFound('Booking not found');
+    }
+
+    return booking;
+  }
+
   async createBooking(body: CreateBooking) {
     const { bookingNumber, surname, startDate, endDate, amountGuests } = body;
 
@@ -64,6 +89,7 @@ class BookingService {
     );
 
     const updatedBooking = await Booking.findOneBy({ id: id });
+
     return updatedBooking;
   }
 }
