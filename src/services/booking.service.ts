@@ -29,8 +29,8 @@ class BookingService {
 
   async getBookingByNumberAndSurname(bookingNumber: string, surname: string) {
     const booking = await Booking.findOneBy({
-      bookingNumber: bookingNumber,
-      surname: surname,
+      bookingNumber: bookingNumber.toLowerCase(),
+      surname: surname.toLowerCase(),
       enable: true,
     });
     if (!booking) {
@@ -44,8 +44,8 @@ class BookingService {
     const { bookingNumber, surname, startDate, endDate, amountGuests } = body;
 
     const booking = new Booking();
-    booking.bookingNumber = bookingNumber;
-    booking.surname = surname;
+    booking.bookingNumber = bookingNumber.toLowerCase();
+    booking.surname = surname.toLowerCase();
     booking.startDate = startDate;
     booking.endDate = endDate;
     booking.amountGuests = amountGuests;

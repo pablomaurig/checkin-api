@@ -14,11 +14,24 @@ import {
   getBookingById,
   getBookings,
   updateBooking,
+  getBookingByNumberAndSurname,
 } from '@controllers/booking.controller';
 
 const router = express.Router();
 
-router.get('/', passport.authenticate('jwt', { session: false }), getBookings);
+router.get(
+  '/bysurname/',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(UserRole.CUSTOMER),
+  getBookingByNumberAndSurname
+);
+
+router.get(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
+  getBookings
+);
 
 router.get(
   '/:id',

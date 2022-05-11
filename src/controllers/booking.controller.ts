@@ -41,6 +41,27 @@ export const getBookingById = async (
   }
 };
 
+export const getBookingByNumberAndSurname = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { bookingNumber, surname } = req.query;
+    let bookings;
+    if (bookingNumber && surname) {
+      bookings = await service.getBookingByNumberAndSurname(
+        bookingNumber.toString(),
+        surname.toString()
+      );
+    }
+
+    res.json(bookings);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const createBooking = async (
   req: Request,
   res: Response,
