@@ -1,6 +1,6 @@
 import joi from 'joi';
 
-// const id = joi.number();
+const id = joi.number();
 const roomId = joi.number();
 const bookingNumber = joi.string();
 const surname = joi.string();
@@ -26,4 +26,8 @@ export const updateBookingSchema = joi.object({
   startDate: startDate,
   endDate: endDate,
   amountGuests: amountGuests,
+});
+
+export const getBookingSchema = joi.object({
+  id: id.required(),
 });

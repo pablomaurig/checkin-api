@@ -6,21 +6,38 @@ import validatorHandler from '@middlewares/validator.handler';
 import {
   createBookingSchema,
   updateBookingSchema,
+  getBookingSchema,
 } from '@schemas/booking.schema';
 import {
   createBooking,
   deleteBooking,
+  getBookingById,
   getBookings,
   updateBooking,
+  getBookingByNumberAndSurname,
 } from '@controllers/booking.controller';
 
 const router = express.Router();
+
+router.get(
+  '/bysurname/',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(UserRole.CUSTOMER),
+  getBookingByNumberAndSurname
+);
 
 router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
   checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
   getBookings
+);
+
+router.get(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  validatorHandler(getBookingSchema, 'params'),
+  getBookingById
 );
 
 router.post(

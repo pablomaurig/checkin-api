@@ -4,12 +4,57 @@ import BookingsService from '@services/booking.service';
 const service = new BookingsService();
 
 export const getBookings = async (
-  _req: Request,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const bookings = await service.getBookings();
+    const { bookingNumber, surname } = req.query;
+    let bookings;
+    if (bookingNumber && surname) {
+      bookings = await service.getBookingByNumberAndSurname(
+        bookingNumber.toString(),
+        surname.toString()
+      );
+    } else {
+      bookings = await service.getBookings();
+    }
+
+    res.json(bookings);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getBookingById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const booking = await service.getBookingById(parseInt(id));
+
+    res.json(booking);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getBookingByNumberAndSurname = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { bookingNumber, surname } = req.query;
+    let bookings;
+    if (bookingNumber && surname) {
+      bookings = await service.getBookingByNumberAndSurname(
+        bookingNumber.toString(),
+        surname.toString()
+      );
+    }
 
     res.json(bookings);
   } catch (error) {
