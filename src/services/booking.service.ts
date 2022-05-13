@@ -6,6 +6,10 @@ import {
   CreateBooking,
   BookingStatus,
 } from '../types/booking.types';
+import { Guest } from '../types/guest.types';
+import GuestService from '../services/guest.service';
+
+const guestService = new GuestService();
 
 class BookingService {
   async getBookings() {
@@ -91,6 +95,30 @@ class BookingService {
     const updatedBooking = await Booking.findOneBy({ id: id });
 
     return updatedBooking;
+  }
+
+  async doCheckIn(guests: Guest[], bookingId: number) {
+    const booking = await Booking.findOneBy({ id: bookingId });
+    if (!booking || !booking.enable) {
+      throw boom.notFound('Booking does not exists');
+    }
+
+    if (booking.state !== BookingStatus.INP) {
+      throw boom.badRequest('Booking has already been checked in');
+    }
+
+    if (booking.amountGuests < guests.length) {
+      throw boom.badRequest('Guests can not be more than the booking guests');
+    }
+
+    guests.forEach(guest => {
+      console.log(guest);
+      guestService.createGuest(guest, bookingId);
+    });
+    this.updateBooking(bookingId, {
+      checkIn: new Date(),
+      state: BookingStatus.IND,
+    });
   }
 }
 

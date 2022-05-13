@@ -1,3 +1,4 @@
+import Joi from 'joi';
 import joi from 'joi';
 
 const id = joi.number();
@@ -30,4 +31,21 @@ export const updateBookingSchema = joi.object({
 
 export const getBookingSchema = joi.object({
   id: id.required(),
+});
+
+export const checkInSchema = joi.object({
+  bookingId: id.required(),
+  guests: joi
+    .array()
+    .items({
+      firstName: Joi.string().required(),
+      lastName: Joi.string().required(),
+      gender: Joi.string().required(),
+      dateOfBirth: Joi.date().required(),
+      telephoneNumber: Joi.string().required(),
+      country: Joi.string().required(),
+      idCardFront: Joi.string().required(),
+      idCardBack: Joi.string().required(),
+    })
+    .required(),
 });

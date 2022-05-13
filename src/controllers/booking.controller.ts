@@ -114,3 +114,19 @@ export const deleteBooking = async (
     next(error);
   }
 };
+
+export const checkIn = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { guests, bookingId } = req.body;
+
+    await service.doCheckIn(guests, bookingId);
+
+    res.sendStatus(200);
+  } catch (error) {
+    next(error);
+  }
+};
