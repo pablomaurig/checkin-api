@@ -17,6 +17,21 @@ export const getSurveys = async (
   }
 };
 
+export const getSurveyByBooking = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const survey = await service.getSurveyByBooking(parseInt(id));
+
+    res.json(survey);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const createSurvey = async (
   req: Request,
   res: Response,
