@@ -16,3 +16,38 @@ export const getSurveys = async (
     next(error);
   }
 };
+
+export const getSurveyByBooking = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const survey = await service.getSurveyByBooking(parseInt(id));
+
+    res.json(survey);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createSurvey = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { bookingId, answer1, answer2, answer3 } = req.body;
+
+    const id = await service.createSurvey({
+      bookingId,
+      answer1,
+      answer2,
+      answer3,
+    });
+    res.json(id);
+  } catch (error) {
+    next(error);
+  }
+};
