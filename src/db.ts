@@ -4,6 +4,7 @@ import { Room } from './entities/room.entity';
 import { Survey } from '@entities/survey.entity';
 import { Booking } from '@entities/booking.entity';
 import { Guest } from '@entities/guest.entity';
+import { Spent } from '@entities/spent.entity';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -14,7 +15,7 @@ export const AppDataSource = new DataSource({
   database: 'hotel',
   synchronize: true,
   logging: true,
-  entities: [User, Room, Survey, Booking, Guest],
+  entities: [User, Room, Survey, Booking, Guest, Spent],
   subscribers: [],
   migrations: [],
 });

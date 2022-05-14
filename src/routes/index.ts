@@ -5,6 +5,7 @@ import authRouter from '@routes/auth.router';
 import roomRouter from '@routes/room.router';
 import employeeRouter from '@routes/employee.router';
 import surveyRouter from '@routes/survey.router';
+import spentRouter from '@routes/spent.router';
 
 const routerApi = (app: Application) => {
   const router = express.Router();
@@ -15,6 +16,7 @@ const routerApi = (app: Application) => {
   router.use('/rooms', roomRouter);
   router.use('/employees', employeeRouter);
   router.use('/surveys', surveyRouter);
+  router.use('/spents', spentRouter);
 };
 
 export default routerApi;
