@@ -29,7 +29,6 @@ router.post(
 router.get(
   '/:bookingId',
   passport.authenticate('jwt', { session: false }),
-  checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
   validatorHandler(getSpentsSchema, 'params'),
   getSpentsByBooking
 );
