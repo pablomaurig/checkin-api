@@ -1,6 +1,6 @@
 import joi from 'joi';
 
-// const id = joi.number();
+const id = joi.number();
 const roomId = joi.number();
 const bookingNumber = joi.string();
 const surname = joi.string();
@@ -26,4 +26,25 @@ export const updateBookingSchema = joi.object({
   startDate: startDate,
   endDate: endDate,
   amountGuests: amountGuests,
+});
+
+export const getBookingSchema = joi.object({
+  id: id.required(),
+});
+
+export const checkInSchema = joi.object({
+  bookingId: id.required(),
+  guests: joi
+    .array()
+    .items({
+      firstName: joi.string().required(),
+      lastName: joi.string().required(),
+      gender: joi.string().required(),
+      dateOfBirth: joi.date().required(),
+      telephoneNumber: joi.string().required(),
+      country: joi.string().required(),
+      idCardFront: joi.string().required(),
+      idCardBack: joi.string().required(),
+    })
+    .required(),
 });
