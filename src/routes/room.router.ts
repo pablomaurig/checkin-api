@@ -15,6 +15,7 @@ import {
   updateRoom,
   getRooms,
   deleteRoom,
+  getAssignableRooms,
 } from '@controllers/room.controller';
 
 const router = express.Router();
@@ -48,6 +49,13 @@ router.delete(
   checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
   validatorHandler(deleteRoomSchema, 'params'),
   deleteRoom
+);
+
+router.get(
+  '/assignables/:bookingId',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
+  getAssignableRooms
 );
 
 export default router;

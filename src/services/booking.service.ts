@@ -25,8 +25,6 @@ class BookingService {
       enable: true,
     });
 
-    console.log('booking ' + booking);
-
     if (!booking) {
       throw boom.notFound('Booking not found');
     }
