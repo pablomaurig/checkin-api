@@ -1,3 +1,4 @@
+import { Booking } from '@entities/booking.entity';
 import boom from '@hapi/boom';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { Room } from '../entities/room.entity';
@@ -56,6 +57,29 @@ class RoomService {
     const updatedRoom = await Room.findOneBy({ id: id });
 
     return updatedRoom;
+  }
+
+  async getAssignableRoomsInDates(startDate: Date, endDate: Date) {
+    console.log('Entro');
+    const bookings = await Booking.createQueryBuilder('booking')
+      .where(
+        '((booking.startDate >= :startDate AND booking.startDate <= :endDate) OR (booking.endDate >= :startDate AND booking.endDate <= :endDate) OR (booking.startDate <= :startDate AND booking.endDate >= :endDate))',
+        { startDate, endDate }
+      )
+      .andWhere('booking.roomId is not NULL')
+      .getMany();
+
+    const rooms = await this.getRooms();
+
+    const assignableRooms = rooms.filter(room => {
+      return !bookings
+        .map(booking => {
+          return booking.roomId;
+        })
+        .includes(room.id);
+    });
+
+    return assignableRooms;
   }
 }
 

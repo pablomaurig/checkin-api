@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import RoomService from '@services/room.service';
+import BookingService from '@services/booking.service';
 
 const service = new RoomService();
+const bookingService = new BookingService();
 
 export const createRoom = async (
   req: Request,
@@ -64,6 +66,27 @@ export const deleteRoom = async (
     const room = await service.deleteRoom(parseInt(id));
 
     res.json(room);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAssignableRooms = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { bookingId } = req.params;
+
+    const booking = await bookingService.getBookingById(parseInt(bookingId));
+
+    const rooms = await service.getAssignableRoomsInDates(
+      booking.startDate,
+      booking.endDate
+    );
+
+    res.json(rooms);
   } catch (error) {
     next(error);
   }
