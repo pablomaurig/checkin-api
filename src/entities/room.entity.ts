@@ -1,4 +1,11 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Booking } from './booking.entity';
 
 @Entity()
 export class Room extends BaseEntity {
@@ -22,4 +29,7 @@ export class Room extends BaseEntity {
 
   @Column()
   enable: boolean;
+
+  @OneToMany(() => Booking, booking => booking.room)
+  bookings: Booking[];
 }
