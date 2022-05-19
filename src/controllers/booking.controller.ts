@@ -1,3 +1,4 @@
+import boom from '@hapi/boom';
 import { Request, Response, NextFunction } from 'express';
 import BookingsService from '@services/booking.service';
 
@@ -54,6 +55,17 @@ export const getBookingByNumberAndSurname = async (
         bookingNumber.toString(),
         surname.toString()
       );
+
+      const dateToday = new Date();
+      const startDate = new Date(bookings.startDate);
+      const differenceInDays =
+        (startDate.getTime() - dateToday.getTime()) / (1000 * 3600 * 24);
+
+      if (differenceInDays >= 5) {
+        throw boom.notFound(
+          'Aun no podes realizar el checkin. Lo podras realizar 5 dias antes de tu ingreso al establecimiento'
+        );
+      }
     }
 
     res.json(bookings);
