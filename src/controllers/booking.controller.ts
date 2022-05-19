@@ -1,8 +1,10 @@
 import boom from '@hapi/boom';
 import { Request, Response, NextFunction } from 'express';
 import BookingsService from '@services/booking.service';
+import UserService from '@services/user.service';
 
 const service = new BookingsService();
+const userService = new UserService();
 
 export const getBookings = async (
   req: Request,
@@ -133,11 +135,17 @@ export const checkIn = async (
   next: NextFunction
 ) => {
   try {
-    const { guests, bookingId } = req.body;
+    const { guests, bookingId, userId } = req.body;
 
     await service.doCheckIn(guests, bookingId);
 
-    res.sendStatus(200);
+    const booking = await service.getBookingById(parseInt(bookingId));
+
+    await userService.updateUser(parseInt(userId), {
+      bookingId: booking.id,
+    });
+
+    await res.sendStatus(200);
   } catch (error) {
     next(error);
   }

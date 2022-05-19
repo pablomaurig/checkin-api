@@ -7,6 +7,7 @@ export interface User {
   role: string;
   email: string;
   recoveryToken?: string | null;
+  bookingId: number;
 }
 
 export enum UserRole {
