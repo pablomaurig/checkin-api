@@ -1,4 +1,4 @@
-import { Booking } from '@entities/booking.entity';
+import { Booking } from '../entities/booking.entity';
 import boom from '@hapi/boom';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { Room } from '../entities/room.entity';
@@ -34,10 +34,37 @@ class RoomService {
   }
 
   async getRooms() {
-    const rooms = await Room.find();
+    const dateToday = new Date();
 
-    return rooms.filter(room => {
-      return room.enable;
+    const rooms = await Room.createQueryBuilder('room')
+      .select([
+        'room.id',
+        'room.floor',
+        'room.name',
+        'room.description',
+        'room.singleBeds',
+        'room.doubleBeds',
+        'booking.id',
+        'booking.startDate',
+        'booking.endDate',
+      ])
+      .leftJoin('room.bookings', 'booking')
+      .where('room.enable = true')
+      .getMany();
+
+    return rooms.map(room => {
+      const actualBooking = room.bookings.filter(booking => {
+        return dateToday >= booking.startDate && dateToday <= booking.endDate;
+      });
+      return {
+        id: room.id,
+        floor: room.floor,
+        name: room.name,
+        description: room.description,
+        singleBeds: room.singleBeds,
+        doubleBeds: room.doubleBeds,
+        bookingId: actualBooking.length === 0 ? null : actualBooking[0].id,
+      };
     });
   }
 

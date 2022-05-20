@@ -39,6 +39,11 @@ export class User extends BaseEntity {
   })
   recoveryToken?: string;
 
+  @Column({
+    nullable: true,
+  })
+  bookingId: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

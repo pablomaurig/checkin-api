@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm';
 import { User } from './entities/user.entity';
 import { Room } from './entities/room.entity';
 import { Survey } from '@entities/survey.entity';
-import { Booking } from '@entities/booking.entity';
+import { Booking } from './entities/booking.entity';
 import { Guest } from '@entities/guest.entity';
 import { Spent } from '@entities/spent.entity';
 
