@@ -130,3 +130,19 @@ export const checkIn = async (
     next(error);
   }
 };
+
+export const checkOut = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { bookingId } = req.body;
+
+    await service.doCheckOut(bookingId);
+
+    res.sendStatus(200);
+  } catch (error) {
+    next(error);
+  }
+};
