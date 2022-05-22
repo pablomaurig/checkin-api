@@ -27,8 +27,6 @@ class BookingService {
       enable: true,
     });
 
-    console.log('booking ' + booking);
-
     if (!booking) {
       throw boom.notFound('Booking not found');
     }
@@ -43,7 +41,7 @@ class BookingService {
       enable: true,
     });
     if (!booking) {
-      throw boom.notFound('Booking not found');
+      throw boom.notFound('No se encontro la reserva');
     }
 
     return booking;

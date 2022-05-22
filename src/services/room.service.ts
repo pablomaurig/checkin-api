@@ -1,3 +1,4 @@
+import { Booking } from '../entities/booking.entity';
 import boom from '@hapi/boom';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { Room } from '../entities/room.entity';
@@ -33,10 +34,37 @@ class RoomService {
   }
 
   async getRooms() {
-    const rooms = await Room.find();
+    const dateToday = new Date();
 
-    return rooms.filter(room => {
-      return room.enable;
+    const rooms = await Room.createQueryBuilder('room')
+      .select([
+        'room.id',
+        'room.floor',
+        'room.name',
+        'room.description',
+        'room.singleBeds',
+        'room.doubleBeds',
+        'booking.id',
+        'booking.startDate',
+        'booking.endDate',
+      ])
+      .leftJoin('room.bookings', 'booking')
+      .where('room.enable = true')
+      .getMany();
+
+    return rooms.map(room => {
+      const actualBooking = room.bookings.filter(booking => {
+        return dateToday >= booking.startDate && dateToday <= booking.endDate;
+      });
+      return {
+        id: room.id,
+        floor: room.floor,
+        name: room.name,
+        description: room.description,
+        singleBeds: room.singleBeds,
+        doubleBeds: room.doubleBeds,
+        bookingId: actualBooking.length === 0 ? null : actualBooking[0].id,
+      };
     });
   }
 
@@ -56,6 +84,29 @@ class RoomService {
     const updatedRoom = await Room.findOneBy({ id: id });
 
     return updatedRoom;
+  }
+
+  async getAssignableRoomsInDates(startDate: Date, endDate: Date) {
+    console.log('Entro');
+    const bookings = await Booking.createQueryBuilder('booking')
+      .where(
+        '((booking.startDate >= :startDate AND booking.startDate <= :endDate) OR (booking.endDate >= :startDate AND booking.endDate <= :endDate) OR (booking.startDate <= :startDate AND booking.endDate >= :endDate))',
+        { startDate, endDate }
+      )
+      .andWhere('booking.roomId is not NULL')
+      .getMany();
+
+    const rooms = await this.getRooms();
+
+    const assignableRooms = rooms.filter(room => {
+      return !bookings
+        .map(booking => {
+          return booking.roomId;
+        })
+        .includes(room.id);
+    });
+
+    return assignableRooms;
   }
 }
 

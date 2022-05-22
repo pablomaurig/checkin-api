@@ -3,9 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Room } from './room.entity';
 
 @Entity()
 export class Booking extends BaseEntity {
@@ -53,4 +55,7 @@ export class Booking extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => Room, room => room.bookings)
+  room: Room;
 }

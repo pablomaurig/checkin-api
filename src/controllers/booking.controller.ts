@@ -1,7 +1,10 @@
+import boom from '@hapi/boom';
 import { Request, Response, NextFunction } from 'express';
 import BookingsService from '@services/booking.service';
+import UserService from '@services/user.service';
 
 const service = new BookingsService();
+const userService = new UserService();
 
 export const getBookings = async (
   req: Request,
@@ -54,6 +57,17 @@ export const getBookingByNumberAndSurname = async (
         bookingNumber.toString(),
         surname.toString()
       );
+
+      const dateToday = new Date();
+      const startDate = new Date(bookings.startDate);
+      const differenceInDays =
+        (startDate.getTime() - dateToday.getTime()) / (1000 * 3600 * 24);
+
+      if (differenceInDays >= 5) {
+        throw boom.notFound(
+          'Aun no podes realizar el checkin. Lo podras realizar 5 dias antes de tu ingreso al establecimiento'
+        );
+      }
     }
 
     res.json(bookings);
@@ -121,11 +135,17 @@ export const checkIn = async (
   next: NextFunction
 ) => {
   try {
-    const { guests, bookingId } = req.body;
+    const { guests, bookingId, userId } = req.body;
 
     await service.doCheckIn(guests, bookingId);
 
-    res.sendStatus(200);
+    const booking = await service.getBookingById(parseInt(bookingId));
+
+    await userService.updateUser(parseInt(userId), {
+      bookingId: booking.id,
+    });
+
+    await res.sendStatus(200);
   } catch (error) {
     next(error);
   }

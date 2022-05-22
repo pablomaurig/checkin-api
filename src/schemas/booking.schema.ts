@@ -1,6 +1,7 @@
 import joi from 'joi';
 
 const id = joi.number();
+const userId = joi.number();
 const roomId = joi.number();
 const bookingNumber = joi.string();
 const surname = joi.string();
@@ -34,6 +35,7 @@ export const getBookingSchema = joi.object({
 
 export const checkInSchema = joi.object({
   bookingId: id.required(),
+  userId: userId.required(),
   guests: joi
     .array()
     .items({
