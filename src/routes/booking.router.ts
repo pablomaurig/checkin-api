@@ -18,6 +18,7 @@ import {
   updateBooking,
   getBookingByNumberAndSurname,
   checkIn,
+  checkOut,
 } from '@controllers/booking.controller';
 
 const router = express.Router();

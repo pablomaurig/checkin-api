@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 export interface Booking {
-  id: string;
+  id: number;
   roomId: string;
   bookingNumber: string;
   surname: string;
