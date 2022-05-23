@@ -142,8 +142,8 @@ class BookingService {
       throw boom.notFound('User does not exists');
     }
 
-    if (booking.state === BookingStatus.OUTD) {
-      throw boom.badRequest('Booking has already been checked out');
+    if (user.bookingId === null) {
+      throw boom.badRequest('The User does not have a booking assigned');
     }
 
     this.updateBooking(bookingId, {
