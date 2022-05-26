@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
 export interface User {
-  id: string;
+  id: number;
   firstName: string;
   lastName: string;
   password: string;
   role: string;
   email: string;
   recoveryToken?: string | null;
-  bookingId: number;
+  bookingId?: number | null;
 }
 
 export enum UserRole {

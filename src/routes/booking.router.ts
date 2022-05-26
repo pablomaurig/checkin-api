@@ -8,6 +8,7 @@ import {
   updateBookingSchema,
   getBookingSchema,
   checkInSchema,
+  checkOutSchema,
 } from '@schemas/booking.schema';
 import {
   createBooking,
@@ -17,6 +18,7 @@ import {
   updateBooking,
   getBookingByNumberAndSurname,
   checkIn,
+  checkOut,
 } from '@controllers/booking.controller';
 
 const router = express.Router();
@@ -34,6 +36,14 @@ router.post(
   checkRoles(UserRole.CUSTOMER),
   validatorHandler(checkInSchema, 'body'),
   checkIn
+);
+
+router.post(
+  '/checkout/',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(UserRole.ADMIN, UserRole.EMPLOYEE),
+  validatorHandler(checkOutSchema, 'body'),
+  checkOut
 );
 
 router.get(

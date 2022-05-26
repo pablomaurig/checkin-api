@@ -50,3 +50,7 @@ export const checkInSchema = joi.object({
     })
     .required(),
 });
+
+export const checkOutSchema = joi.object({
+  bookingId: id.required(),
+});

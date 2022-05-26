@@ -8,8 +8,11 @@ import {
 } from '../types/booking.types';
 import { Guest } from '../types/guest.types';
 import GuestService from '../services/guest.service';
+import UserService from '../services/user.service';
+import { User } from '@entities/user.entity';
 
 const guestService = new GuestService();
+const userService = new UserService();
 
 class BookingService {
   async getBookings() {
@@ -119,6 +122,37 @@ class BookingService {
     this.updateBooking(bookingId, {
       checkIn: new Date(),
       state: BookingStatus.IND,
+    });
+  }
+
+  async doCheckOut(bookingId: number) {
+    const booking = await Booking.findOneBy({ id: bookingId });
+
+    const user = await User.findOneBy({ bookingId: bookingId });
+
+    if (!booking || !booking.enable) {
+      throw boom.notFound('Booking does not exists');
+    }
+
+    if (booking.state === BookingStatus.OUTD) {
+      throw boom.badRequest('Booking has already been checked out');
+    }
+
+    if (!user) {
+      throw boom.notFound('User does not exists');
+    }
+
+    if (user.bookingId === null) {
+      throw boom.badRequest('The User does not have a booking assigned');
+    }
+
+    this.updateBooking(bookingId, {
+      checkOut: new Date(),
+      state: BookingStatus.OUTD,
+    });
+
+    userService.updateUser(user.id, {
+      bookingId: null,
     });
   }
 }
