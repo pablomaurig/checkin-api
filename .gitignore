@@ -219,5 +219,7 @@ $RECYCLE.BIN/
 *.lnk
 
 postgres_data
+mongo-db
+grafana-storage
 
 # End of https://www.toptal.com/developers/gitignore/api/node,windows,linux,macos
