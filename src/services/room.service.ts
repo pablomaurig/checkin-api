@@ -3,6 +3,8 @@ import boom from '@hapi/boom';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { Room } from '../entities/room.entity';
 import { CreateRoom, Room as RoomInterface } from '../types/room.types';
+import { mapRoomDtoOrion, mapPropertiesRoomDtoOrion } from '../dtos/index';
+import { saveDataInOrion, updateDataInOrion } from './fiware.service';
 
 class RoomService {
   async createRoom(body: CreateRoom) {
@@ -17,6 +19,9 @@ class RoomService {
     room.enable = true;
     await room.save();
 
+    await saveDataInOrion(mapRoomDtoOrion(room));
+    console.log('Salio de saveDataInOrion');
+
     return room.id;
   }
 
@@ -29,6 +34,12 @@ class RoomService {
     await Room.update({ id: id }, body as QueryDeepPartialEntity<Room>);
 
     const updatedRoom = await Room.findOneBy({ id: id });
+    if (updatedRoom) {
+      await updateDataInOrion(
+        id.toString(),
+        mapPropertiesRoomDtoOrion(updatedRoom)
+      );
+    }
 
     return updatedRoom;
   }
@@ -82,6 +93,8 @@ class RoomService {
     await Room.update({ id: id }, body as QueryDeepPartialEntity<Room>);
 
     const updatedRoom = await Room.findOneBy({ id: id });
+
+    // await saveDataInOrion(updatedRoom);
 
     return updatedRoom;
   }
