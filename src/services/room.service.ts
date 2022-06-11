@@ -34,12 +34,12 @@ class RoomService {
     await Room.update({ id: id }, body as QueryDeepPartialEntity<Room>);
 
     const updatedRoom = await Room.findOneBy({ id: id });
-    if (updatedRoom) {
+    /*if (updatedRoom) {
       await updateDataInOrion(
         id.toString(),
         mapPropertiesRoomDtoOrion(updatedRoom)
       );
-    }
+    }*/
 
     return updatedRoom;
   }
@@ -94,7 +94,12 @@ class RoomService {
 
     const updatedRoom = await Room.findOneBy({ id: id });
 
-    // await saveDataInOrion(updatedRoom);
+    /*if (updatedRoom) {
+      await updateDataInOrion(
+        id.toString(),
+        mapPropertiesRoomDtoOrion(updatedRoom)
+      );
+    }*/
 
     return updatedRoom;
   }
