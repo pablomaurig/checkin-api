@@ -1,5 +1,5 @@
 import { Room } from '@entities/room.entity';
-//import { Room as RoomInterface } from '../types/room.types';
+// import { Room as RoomInterface } from '../types/room.types';
 
 export const mapRoomDtoOrion = (room: Room) => {
   return {

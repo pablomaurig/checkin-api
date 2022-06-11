@@ -31,7 +31,7 @@ export const updateDataInOrion = async (id: string, changes: any) => {
     url: URL + ':' + PORT + '/v2/entities/' + id + '?type=room',
     headers: {
       'Content-Type': 'application/json',
-      //'Content-Length': 31,
+      // 'Content-Length': 31,
     },
     body: changes,
   };

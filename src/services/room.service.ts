@@ -3,8 +3,8 @@ import boom from '@hapi/boom';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { Room } from '../entities/room.entity';
 import { CreateRoom, Room as RoomInterface } from '../types/room.types';
-import { mapRoomDtoOrion /*mapPropertiesRoomDtoOrion*/ } from '../dtos/index';
-import { saveDataInOrion /*updateDataInOrion*/ } from './fiware.service';
+import { mapRoomDtoOrion /* mapPropertiesRoomDtoOrion */ } from '../dtos/index';
+import { saveDataInOrion /* updateDataInOrion */ } from './fiware.service';
 
 class RoomService {
   async createRoom(body: CreateRoom) {
@@ -34,12 +34,12 @@ class RoomService {
     await Room.update({ id: id }, body as QueryDeepPartialEntity<Room>);
 
     const updatedRoom = await Room.findOneBy({ id: id });
-    /*if (updatedRoom) {
+    /* if (updatedRoom) {
       await updateDataInOrion(
         id.toString(),
         mapPropertiesRoomDtoOrion(updatedRoom)
       );
-    }*/
+    } */
 
     return updatedRoom;
   }
@@ -94,12 +94,12 @@ class RoomService {
 
     const updatedRoom = await Room.findOneBy({ id: id });
 
-    /*if (updatedRoom) {
+    /* if (updatedRoom) {
       await updateDataInOrion(
         id.toString(),
         mapPropertiesRoomDtoOrion(updatedRoom)
       );
-    }*/
+    } */
 
     return updatedRoom;
   }
