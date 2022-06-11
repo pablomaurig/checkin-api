@@ -3,8 +3,8 @@ import boom from '@hapi/boom';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { Room } from '../entities/room.entity';
 import { CreateRoom, Room as RoomInterface } from '../types/room.types';
-import { mapRoomDtoOrion, mapPropertiesRoomDtoOrion } from '../dtos/index';
-import { saveDataInOrion, updateDataInOrion } from './fiware.service';
+import { mapRoomDtoOrion /*mapPropertiesRoomDtoOrion*/ } from '../dtos/index';
+import { saveDataInOrion /*updateDataInOrion*/ } from './fiware.service';
 
 class RoomService {
   async createRoom(body: CreateRoom) {
