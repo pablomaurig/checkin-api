@@ -83,7 +83,8 @@ export const getAssignableRooms = async (
 
     const rooms = await service.getAssignableRoomsInDates(
       booking.startDate,
-      booking.endDate
+      booking.endDate,
+      booking.amountGuests
     );
 
     res.json(rooms);

@@ -5,6 +5,10 @@ import { Room } from '../entities/room.entity';
 import { CreateRoom, Room as RoomInterface } from '../types/room.types';
 import { mapRoomDtoOrion /* mapPropertiesRoomDtoOrion */ } from '../dtos/index';
 import { saveDataInOrion /* updateDataInOrion */ } from './fiware.service';
+import BookingService from '../services/booking.service';
+import { BookingStatus } from '../types/booking.types';
+
+const bookingService = new BookingService();
 
 class RoomService {
   async createRoom(body: CreateRoom) {
@@ -65,6 +69,7 @@ class RoomService {
 
     return rooms.map(room => {
       const actualBooking = room.bookings.filter(booking => {
+        CheckState(booking);
         return dateToday >= booking.startDate && dateToday <= booking.endDate;
       });
       return {
@@ -104,7 +109,11 @@ class RoomService {
     return updatedRoom;
   }
 
-  async getAssignableRoomsInDates(startDate: Date, endDate: Date) {
+  async getAssignableRoomsInDates(
+    startDate: Date,
+    endDate: Date,
+    amountGuests: number
+  ) {
     console.log('Entro');
     const bookings = await Booking.createQueryBuilder('booking')
       .where(
@@ -124,8 +133,24 @@ class RoomService {
         .includes(room.id);
     });
 
-    return assignableRooms;
+    return assignableRooms.filter(
+      room => room.singleBeds + room.doubleBeds * 2 >= amountGuests
+    );
   }
 }
 
 export default RoomService;
+
+function CheckState(booking: Booking) {
+  const fecha = booking.endDate;
+  const dias = -3;
+  const hoy = new Date();
+
+  fecha.setDate(fecha.getDate() + dias);
+
+  const body = { state: BookingStatus.OUTP };
+
+  if (fecha <= hoy) {
+    bookingService.updateBooking(booking.id, body);
+  }
+}
