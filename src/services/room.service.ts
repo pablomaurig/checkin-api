@@ -112,7 +112,7 @@ class RoomService {
   async getAssignableRoomsInDates(
     startDate: Date,
     endDate: Date,
-    amountGuests: Number
+    amountGuests: number
   ) {
     console.log('Entro');
     const bookings = await Booking.createQueryBuilder('booking')
