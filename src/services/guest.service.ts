@@ -1,5 +1,7 @@
 import { Guest } from '../entities/guest.entity';
 import { CreateGuest } from '../types/guest.types';
+import { saveDataInOrion } from './fiware.service';
+import { mapGuestDtoOrion } from '../dtos/index';
 
 class GuestService {
   async createGuest(body: CreateGuest, bookingId: number) {
@@ -26,6 +28,8 @@ class GuestService {
     guest.bookingId = bookingId;
 
     await guest.save();
+
+    await saveDataInOrion(mapGuestDtoOrion(guest));
   }
 }
 
