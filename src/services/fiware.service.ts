@@ -31,14 +31,5 @@ export const updateDataInOrion = async (
     : 'http://localhost/';
   const PORT = process.env.PORT_ORION ? process.env.PORT_ORION : '1026';
 
-  const config = {
-    method: 'patch',
-    url: URL + ':' + PORT + '/v2/entities/' + id + '?type=' + tipo,
-    headers: {
-      'Content-Type': 'application/json',
-      //'Content-Length': JSON.stringify(changes).length,
-    },
-    body: changes,
-  };
-  return axios(config);
+  return axios.patch(URL + ':' + PORT + '/v2/entities/' + id + '/attrs?type=' + tipo, changes);
 };
