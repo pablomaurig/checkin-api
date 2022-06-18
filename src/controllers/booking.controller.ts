@@ -2,6 +2,7 @@ import boom from '@hapi/boom';
 import { Request, Response, NextFunction } from 'express';
 import BookingsService from '@services/booking.service';
 import UserService from '@services/user.service';
+import { User } from '@entities/user.entity';
 
 const service = new BookingsService();
 const userService = new UserService();
@@ -143,7 +144,7 @@ export const checkIn = async (
       bookingId: booking.id,
     });
 
-    await service.doCheckIn(guests, bookingId, userUpdated);
+    await service.doCheckIn(guests, bookingId, userUpdated as User);
 
     await res.sendStatus(200);
   } catch (error) {
