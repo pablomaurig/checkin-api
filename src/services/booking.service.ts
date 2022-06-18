@@ -10,6 +10,7 @@ import { Guest } from '../types/guest.types';
 import GuestService from '../services/guest.service';
 import UserService from '../services/user.service';
 import { User } from '@entities/user.entity';
+import { Room } from '@entities/room.entity';
 
 const guestService = new GuestService();
 const userService = new UserService();
@@ -28,11 +29,20 @@ class BookingService {
       enable: true,
     });
 
+    const room = await Room.findOneBy({
+      id: booking?.roomId,
+    });
+
     if (!booking) {
       throw boom.notFound('Booking not found');
     }
 
-    return booking;
+    const bookingRoom = {
+      ...booking,
+      room: { ...room },
+    };
+
+    return bookingRoom;
   }
 
   async getBookingByNumberAndSurname(bookingNumber: string, surname: string) {
@@ -101,7 +111,7 @@ class BookingService {
     return updatedBooking;
   }
 
-  async doCheckIn(guests: Guest[], bookingId: number) {
+  async doCheckIn(guests: Guest[], bookingId: number, userUpdated: User) {
     const booking = await Booking.findOneBy({ id: bookingId });
     if (!booking || !booking.enable) {
       throw boom.notFound('Booking does not exists');
@@ -111,7 +121,7 @@ class BookingService {
       throw boom.badRequest('Booking has already been checked in');
     }
 
-    if (booking.amountGuests < guests.length) {
+    if (booking.amountGuests <= guests.length) {
       throw boom.badRequest('Guests can not be more than the booking guests');
     }
 
@@ -123,6 +133,8 @@ class BookingService {
       checkIn: new Date(),
       state: BookingStatus.IND,
     });
+
+    return userUpdated;
   }
 
   async doCheckOut(bookingId: number) {

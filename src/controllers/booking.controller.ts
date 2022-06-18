@@ -137,13 +137,13 @@ export const checkIn = async (
   try {
     const { guests, bookingId, userId } = req.body;
 
-    await service.doCheckIn(guests, bookingId);
-
     const booking = await service.getBookingById(parseInt(bookingId));
 
-    await userService.updateUser(parseInt(userId), {
+    const userUpdated = await userService.updateUser(parseInt(userId), {
       bookingId: booking.id,
     });
+
+    await service.doCheckIn(guests, bookingId, userUpdated);
 
     await res.sendStatus(200);
   } catch (error) {
