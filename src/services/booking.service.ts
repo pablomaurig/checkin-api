@@ -110,6 +110,7 @@ class BookingService {
       throw boom.badRequest('Booking has already been checked in');
     }
 
+    
     if (booking.amountGuests < guests.length) {
       throw boom.badRequest('Guests can not be more than the booking guests');
     }
