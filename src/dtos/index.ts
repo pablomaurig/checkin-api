@@ -36,11 +36,11 @@ export const mapRoomDtoOrion = (room: Room) => {
 export const mapPropertiesRoomDtoOrion = (room: Room) => {
   return {
     floor: {
-      //type: 'Integer',
+      // type: 'Integer',
       value: room.floor,
     },
     name: {
-      //type: 'String',
+      // type: 'String',
       value: room.name,
     },
     description: {
@@ -48,15 +48,15 @@ export const mapPropertiesRoomDtoOrion = (room: Room) => {
       value: room.description,
     },
     singleBeds: {
-      //type: 'Integer',
+      // type: 'Integer',
       value: room.singleBeds,
     },
     doubleBeds: {
-      //type: 'Integer',
+      // type: 'Integer',
       value: room.doubleBeds,
     },
     enable: {
-      //type: 'Boolean',
+      // type: 'Boolean',
       value: room.enable,
     },
   };
