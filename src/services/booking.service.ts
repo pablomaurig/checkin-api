@@ -131,6 +131,14 @@ class BookingService {
       updateBooking as QueryDeepPartialEntity<Booking>
     );
 
+    const user = await User.findOneBy({ bookingId: booking.id });
+
+    if (user) {
+      userService.updateUser(user.id, {
+        bookingId: null,
+      });
+    }
+
     const updatedBooking = await Booking.findOneBy({ id: id });
 
     return updatedBooking;
