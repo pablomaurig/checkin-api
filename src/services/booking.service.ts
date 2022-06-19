@@ -16,6 +16,8 @@ import {
 } from '../dtos/index';
 import { saveDataInOrion, updateDataInOrion } from './fiware.service';
 
+
+import { Room } from '@entities/room.entity';
 const guestService = new GuestService();
 const userService = new UserService();
 
@@ -37,7 +39,27 @@ class BookingService {
       throw boom.notFound('Booking not found');
     }
 
-    return booking;
+    if (booking?.roomId) {
+      const room = await Room.findOneBy({
+        id: booking?.roomId,
+      });
+
+      const bookingRoom = {
+        ...booking,
+        room: {
+          ...room,
+        },
+      };
+
+      return bookingRoom;
+    }
+
+    const bookingRoom = {
+      ...booking,
+      room: null,
+    };
+
+    return bookingRoom;
   }
 
   async getBookingByNumberAndSurname(bookingNumber: string, surname: string) {
@@ -126,7 +148,7 @@ class BookingService {
       throw boom.badRequest('Booking has already been checked in');
     }
 
-    if (booking.amountGuests === guests.length) {
+    if (booking.amountGuests < guests.length) {
       throw boom.badRequest('Guests can not be more than the booking guests');
     }
 
