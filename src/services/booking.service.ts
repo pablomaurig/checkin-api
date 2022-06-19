@@ -10,6 +10,7 @@ import { Guest } from '../types/guest.types';
 import GuestService from '../services/guest.service';
 import UserService from '../services/user.service';
 import { User } from '@entities/user.entity';
+import { Room } from '@entities/room.entity';
 const guestService = new GuestService();
 const userService = new UserService();
 
@@ -31,7 +32,27 @@ class BookingService {
       throw boom.notFound('Booking not found');
     }
 
-    return booking;
+    if (booking?.roomId) {
+      const room = await Room.findOneBy({
+        id: booking?.roomId,
+      });
+
+      const bookingRoom = {
+        ...booking,
+        room: {
+          ...room,
+        },
+      };
+
+      return bookingRoom;
+    }
+
+    const bookingRoom = {
+      ...booking,
+      room: null,
+    };
+
+    return bookingRoom;
   }
 
   async getBookingByNumberAndSurname(bookingNumber: string, surname: string) {
