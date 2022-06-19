@@ -10,6 +10,11 @@ import { Guest } from '../types/guest.types';
 import GuestService from '../services/guest.service';
 import UserService from '../services/user.service';
 import { User } from '@entities/user.entity';
+import {
+  mapBookingDtoOrion,
+  mapPropertiesBookingDtoOrion,
+} from '../dtos/index';
+import { saveDataInOrion, updateDataInOrion } from './fiware.service';
 import { Room } from '@entities/room.entity';
 const guestService = new GuestService();
 const userService = new UserService();
@@ -82,6 +87,8 @@ class BookingService {
 
     await booking.save();
 
+    await saveDataInOrion(mapBookingDtoOrion(booking));
+
     return booking.id;
   }
 
@@ -99,6 +106,14 @@ class BookingService {
     );
 
     const updatedBooking = await Booking.findOneBy({ id: id });
+
+    if (updatedBooking) {
+      await updateDataInOrion(
+        id.toString(),
+        mapPropertiesBookingDtoOrion(updatedBooking),
+        'booking'
+      );
+    }
 
     return updatedBooking;
   }
