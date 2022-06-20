@@ -77,6 +77,10 @@ class EmployeeService {
       throw boom.notFound('Employee does not exists');
     }
 
+    if (body?.password) {
+      body.password = await hashPassword(body?.password);
+    }
+
     const updateEmployee = { ...body, updatedAt: new Date() };
 
     await User.update(
