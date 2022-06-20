@@ -25,6 +25,8 @@ export const changePasswordSchema = joi.object({
 });
 
 export const updateUserSchema = joi.object({
+  email: email,
+  password: password,
   firstName: firstName,
   lastName: lastName,
 });
