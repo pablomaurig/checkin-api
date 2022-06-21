@@ -22,8 +22,14 @@ const userService = new UserService();
 class BookingService {
   async getBookings() {
     const bookings = await Booking.find();
-    return bookings.filter(booking => {
+
+    bookings.forEach(booking => {
       this.CheckState(booking);
+    });
+
+    const bookingsUpdated = await Booking.find();
+
+    return bookingsUpdated.filter(booking => {
       return booking.enable;
     });
   }

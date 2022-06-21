@@ -146,6 +146,7 @@ export const checkIn = async (
     await service.doCheckIn(guests, bookingId);
 
     res.json(userUpdated);
+    res.sendStatus(200);
   } catch (error) {
     next(error);
   }
@@ -159,7 +160,7 @@ export const checkOut = async (
   try {
     const { bookingId } = req.body;
 
-    await service.doCheckOut(bookingId);
+    service.doCheckOut(bookingId);
 
     res.sendStatus(200);
   } catch (error) {
