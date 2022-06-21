@@ -144,9 +144,13 @@ export const checkIn = async (
       bookingId: booking.id,
     });
 
-    await service.doCheckIn(guests, bookingId, userUpdated as User);
+    const userCheckedIn = await service.doCheckIn(
+      guests,
+      bookingId,
+      userUpdated as User
+    );
 
-    await res.sendStatus(200);
+    res.json(userCheckedIn);
   } catch (error) {
     next(error);
   }

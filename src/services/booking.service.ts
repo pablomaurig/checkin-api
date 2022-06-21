@@ -124,7 +124,10 @@ class BookingService {
       throw boom.notFound('Booking does not exists');
     }
 
-    const updateBooking = { updatedAt: new Date(), enable: false };
+    const updateBooking = {
+      updatedAt: new Date(),
+      enable: false,
+    };
 
     await Booking.update(
       { id: id },
@@ -138,6 +141,8 @@ class BookingService {
         bookingId: null,
       });
     }
+
+    await this.updateBooking(id, { roomId: null });
 
     const updatedBooking = await Booking.findOneBy({ id: id });
 

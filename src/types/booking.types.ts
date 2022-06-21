@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 export interface Booking {
   id: number;
-  roomId: string;
+  roomId?: string | null;
   bookingNumber: string;
   surname: string;
   startDate: Date;
