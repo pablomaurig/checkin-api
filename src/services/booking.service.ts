@@ -146,6 +146,8 @@ class BookingService {
       });
     }
 
+    await this.updateBooking(id, { roomId: null });
+
     const updatedBooking = await Booking.findOneBy({ id: id });
 
     return updatedBooking;
