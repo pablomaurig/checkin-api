@@ -63,6 +63,7 @@ services:
     command: --bind_ip_all --smallfiles
     volumes:
       - ./data/mongo-db:/data
+      - ./data/mongo-volume:/data/db
 
   adminmongo:
     image: mrvautin/adminmongo
@@ -86,9 +87,9 @@ services:
     container_name: mysql
     restart: always
     environment:
-        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-        - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
     volumes:
-        - ./data/mysql:/var/lib/mysql
+      - ./data/mysql:/var/lib/mysql
     ports:
-        - 5004:3306
+      - 5004:3306
