@@ -22,7 +22,14 @@ const userService = new UserService();
 class BookingService {
   async getBookings() {
     const bookings = await Booking.find();
-    return bookings.filter(booking => {
+
+    bookings.forEach(booking => {
+      this.CheckState(booking);
+    });
+
+    const bookingsUpdated = await Booking.find();
+
+    return bookingsUpdated.filter(booking => {
       return booking.enable;
     });
   }
@@ -124,10 +131,7 @@ class BookingService {
       throw boom.notFound('Booking does not exists');
     }
 
-    const updateBooking = {
-      updatedAt: new Date(),
-      enable: false,
-    };
+    const updateBooking = { updatedAt: new Date(), enable: false };
 
     await Booking.update(
       { id: id },
@@ -142,14 +146,12 @@ class BookingService {
       });
     }
 
-    await this.updateBooking(id, { roomId: null });
-
     const updatedBooking = await Booking.findOneBy({ id: id });
 
     return updatedBooking;
   }
 
-  async doCheckIn(guests: Guest[], bookingId: number, userUpdated: User) {
+  async doCheckIn(guests: Guest[], bookingId: number) {
     const booking = await Booking.findOneBy({ id: bookingId });
     if (!booking || !booking.enable) {
       throw boom.notFound('Booking does not exists');
@@ -167,12 +169,14 @@ class BookingService {
       console.log(guest);
       guestService.createGuest(guest, bookingId);
     });
-    this.updateBooking(bookingId, {
+    const updatedBooking = await this.updateBooking(bookingId, {
       checkIn: new Date(),
       state: BookingStatus.IND,
     });
 
-    return userUpdated;
+    if (updatedBooking) {
+      this.CheckState(updatedBooking);
+    }
   }
 
   async doCheckOut(bookingId: number) {
@@ -204,6 +208,22 @@ class BookingService {
     userService.updateUser(user.id, {
       bookingId: null,
     });
+  }
+
+  async CheckState(booking: Booking) {
+    if (booking.state === BookingStatus.IND) {
+      const fecha = booking.endDate;
+      const dias = -3;
+      const hoy = new Date();
+
+      fecha.setDate(fecha.getDate() + dias);
+
+      const body = { state: BookingStatus.OUTP };
+
+      if (fecha <= hoy) {
+        this.updateBooking(booking.id, body);
+      }
+    }
   }
 }
 

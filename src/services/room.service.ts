@@ -5,10 +5,6 @@ import { Room } from '../entities/room.entity';
 import { CreateRoom, Room as RoomInterface } from '../types/room.types';
 import { mapRoomDtoOrion, mapPropertiesRoomDtoOrion } from '../dtos/index';
 import { saveDataInOrion, updateDataInOrion } from './fiware.service';
-import BookingService from '../services/booking.service';
-import { BookingStatus } from '../types/booking.types';
-
-const bookingService = new BookingService();
 
 class RoomService {
   async createRoom(body: CreateRoom) {
@@ -70,7 +66,6 @@ class RoomService {
 
     return rooms.map(room => {
       const actualBooking = room.bookings.filter(booking => {
-        CheckState(booking);
         return dateToday >= booking.startDate && dateToday <= booking.endDate;
       });
       return {
@@ -141,17 +136,3 @@ class RoomService {
 }
 
 export default RoomService;
-
-function CheckState(booking: Booking) {
-  const fecha = booking.endDate;
-  const dias = -3;
-  const hoy = new Date();
-
-  fecha.setDate(fecha.getDate() + dias);
-
-  const body = { state: BookingStatus.OUTP };
-
-  if (fecha <= hoy) {
-    bookingService.updateBooking(booking.id, body);
-  }
-}
